@@ -1,5 +1,7 @@
+using System;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -8,6 +10,8 @@ namespace PersonalWebsite
 {
     public class Startup
     {
+        private readonly bool isNotDockerized = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true";
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -19,6 +23,18 @@ namespace PersonalWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
+            if (isNotDockerized)
+            {
+                services.AddHttpsRedirection(opt => opt.HttpsPort = 5001);
+            }
+            
+            services.Configure<ForwardedHeadersOptions>(options =>
+            {
+                options.ForwardedHeaders = ForwardedHeaders.XForwardedFor |
+                                           ForwardedHeaders.XForwardedProto;
+                options.KnownNetworks.Clear();
+                options.KnownProxies.Clear();
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -35,7 +51,10 @@ namespace PersonalWebsite
                 app.UseHsts();
             }
 
-            app.UseHttpsRedirection();
+            if (isNotDockerized)
+            {
+                app.UseHttpsRedirection();
+            }
             app.UseStaticFiles();
 
             app.UseRouting();
