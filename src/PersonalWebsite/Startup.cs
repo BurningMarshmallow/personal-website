@@ -27,6 +27,13 @@ namespace PersonalWebsite
             {
                 services.AddHttpsRedirection(opt => opt.HttpsPort = 5001);
             }
+            services.AddCors(options =>
+                {
+                    options.AddPolicy("CorsPolicy",
+                        builder => builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader());
+                });
             
             services.Configure<ForwardedHeadersOptions>(options =>
             {
