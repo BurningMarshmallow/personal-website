@@ -3,7 +3,7 @@
   "description": "Personal website of Stanislav Fedianin",
   "repository": "https://github.com/BurningMarshmallow/personal-website",
   "keywords": ["aspnet", "core"],
-  "stack": "heroku-16",
+  "stack": "heroku-20",
   "buildpacks": [
     {
       "url": "https://github.com/jincod/dotnetcore-buildpack"
