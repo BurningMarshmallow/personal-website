@@ -10,8 +10,6 @@ namespace PersonalWebsite
 {
     public class Startup
     {
-        private readonly bool isNotDockerized = Environment.GetEnvironmentVariable("DOTNET_RUNNING_IN_CONTAINER") != "true";
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -23,10 +21,6 @@ namespace PersonalWebsite
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddRazorPages();
-            if (isNotDockerized)
-            {
-                services.AddHttpsRedirection(opt => opt.HttpsPort = 5001);
-            }
             services.AddCors(options =>
                 {
                     options.AddPolicy("CorsPolicy",
@@ -58,10 +52,8 @@ namespace PersonalWebsite
                 app.UseHsts();
             }
 
-            if (isNotDockerized)
-            {
-                app.UseHttpsRedirection();
-            }
+            app.UseHttpsRedirection();
+
             app.UseStaticFiles();
 
             app.UseRouting();
