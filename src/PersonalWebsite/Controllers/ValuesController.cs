@@ -24,12 +24,5 @@ namespace PersonalWebsite.Controllers
 		{
 			return "value";
 		}
-		
-		// GET api/values/broken
-		[HttpGet("broken")]
-		public string Broken()
-		{
-			throw new NotImplementedException();
-		}
 	}
 }
