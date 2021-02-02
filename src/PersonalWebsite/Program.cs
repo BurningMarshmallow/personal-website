@@ -1,3 +1,4 @@
+using System;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -21,6 +22,20 @@ namespace PersonalWebsite
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>();
+                    ConfigureSentry(webBuilder);
                 });
+
+        private static void ConfigureSentry(IWebHostBuilder webBuilder)
+        {
+            var dsn = Environment.GetEnvironmentVariable("SENTRY_DSN");
+            if (dsn != null)
+            {
+                webBuilder.UseSentry(dsn);
+            }
+            else
+            {
+                webBuilder.UseSentry();
+            }
+        }
     }
 }

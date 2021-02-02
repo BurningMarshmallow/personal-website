@@ -4,5 +4,9 @@
     <TargetFramework>netcoreapp5.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Sentry.AspNetCore" Version="3.0.1" />
+  </ItemGroup>
+
 </Project>
   
