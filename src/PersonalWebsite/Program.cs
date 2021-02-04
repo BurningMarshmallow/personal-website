@@ -28,14 +28,7 @@ namespace PersonalWebsite
         private static void ConfigureSentry(IWebHostBuilder webBuilder)
         {
             var dsn = Environment.GetEnvironmentVariable("SENTRY_DSN");
-            if (dsn != null)
-            {
-                webBuilder.UseSentry(dsn);
-            }
-            else
-            {
-                webBuilder.UseSentry();
-            }
+            webBuilder.UseSentry(dsn!);
         }
     }
 }
